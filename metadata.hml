@@ -1,0 +1,737 @@
+kind: CompatibilityConfig
+date: 2023-10-19
+---
+kind: AuthConfig
+version: v1
+definition:
+  allowRoleEmulationBy: admin
+  mode:
+    webhook:
+      method: Post
+      url: https://auth.pro.hasura.io/webhook/ddn?role=admin
+---
+kind: HasuraHubDataConnector
+version: v1
+definition:
+  name: default
+  connectorId: hasura/postgres
+  connectorConfiguration:
+    - region: gcp-asia-south1
+      mode: ReadWrite
+      configuration:
+        version: 1
+        connectionUri:
+          uri:
+            value: postgres://postgres:postgres@localhost:5432/postgres
+        metadata:
+          tables:
+            todos:
+              schemaName: public
+              tableName: todos
+              columns:
+                completed:
+                  name: completed
+                  type: bool
+                  nullable: nonNullable
+                  description: null
+                created_at:
+                  name: created_at
+                  type: timestamp
+                  nullable: nonNullable
+                  description: null
+                id:
+                  name: id
+                  type: int4
+                  nullable: nonNullable
+                  description: null
+                todo:
+                  name: todo
+                  type: varchar
+                  nullable: nonNullable
+                  description: null
+                user_id:
+                  name: user_id
+                  type: int4
+                  nullable: nonNullable
+                  description: null
+              uniquenessConstraints:
+                todos_pkey:
+                  - id
+              foreignRelations:
+                fk_todos_user:
+                  foreignTable: users
+                  columnMapping:
+                    user_id: id
+              description: null
+            users:
+              schemaName: public
+              tableName: users
+              columns:
+                fist_name:
+                  name: fist_name
+                  type: text
+                  nullable: nullable
+                  description: null
+                id:
+                  name: id
+                  type: int4
+                  nullable: nonNullable
+                  description: null
+                last_name:
+                  name: last_name
+                  type: text
+                  nullable: nullable
+                  description: null
+              uniquenessConstraints:
+                users_pkey:
+                  - id
+              foreignRelations: {}
+              description: null
+          nativeQueries: {}
+          aggregateFunctions:
+            bool:
+              bool_and:
+                returnType: bool
+              bool_or:
+                returnType: bool
+              every:
+                returnType: bool
+            int4:
+              bit_and:
+                returnType: int4
+              bit_or:
+                returnType: int4
+              bit_xor:
+                returnType: int4
+              max:
+                returnType: int4
+              min:
+                returnType: int4
+            text:
+              max:
+                returnType: text
+              min:
+                returnType: text
+            timestamp:
+              max:
+                returnType: timestamp
+              min:
+                returnType: timestamp
+          comparisonOperators:
+            bool:
+              _eq:
+                operatorName: =
+                argumentType: bool
+              _gt:
+                operatorName: ">"
+                argumentType: bool
+              _gte:
+                operatorName: ">="
+                argumentType: bool
+              _lt:
+                operatorName: <
+                argumentType: bool
+              _lte:
+                operatorName: <=
+                argumentType: bool
+              _neq:
+                operatorName: <>
+                argumentType: bool
+            int4:
+              _eq:
+                operatorName: =
+                argumentType: int4
+              _gt:
+                operatorName: ">"
+                argumentType: int4
+              _gte:
+                operatorName: ">="
+                argumentType: int4
+              _lt:
+                operatorName: <
+                argumentType: int4
+              _lte:
+                operatorName: <=
+                argumentType: int4
+              _neq:
+                operatorName: <>
+                argumentType: int4
+            text:
+              _eq:
+                operatorName: =
+                argumentType: text
+              _gt:
+                operatorName: ">"
+                argumentType: text
+              _gte:
+                operatorName: ">="
+                argumentType: text
+              _ilike:
+                operatorName: ~~*
+                argumentType: text
+              _iregex:
+                operatorName: ~*
+                argumentType: text
+              _like:
+                operatorName: ~~
+                argumentType: text
+              _lt:
+                operatorName: <
+                argumentType: text
+              _lte:
+                operatorName: <=
+                argumentType: text
+              _neq:
+                operatorName: <>
+                argumentType: text
+              _nilike:
+                operatorName: "!~~*"
+                argumentType: text
+              _niregex:
+                operatorName: "!~*"
+                argumentType: text
+              _nlike:
+                operatorName: "!~~"
+                argumentType: text
+              _nregex:
+                operatorName: "!~"
+                argumentType: text
+              _regex:
+                operatorName: "~"
+                argumentType: text
+            timestamp:
+              _eq:
+                operatorName: =
+                argumentType: timestamp
+              _gt:
+                operatorName: ">"
+                argumentType: timestamp
+              _gte:
+                operatorName: ">="
+                argumentType: timestamp
+              _lt:
+                operatorName: <
+                argumentType: timestamp
+              _lte:
+                operatorName: <=
+                argumentType: timestamp
+              _neq:
+                operatorName: <>
+                argumentType: timestamp
+            varchar:
+              _eq:
+                operatorName: =
+                argumentType: varchar
+              _gt:
+                operatorName: ">"
+                argumentType: varchar
+              _gte:
+                operatorName: ">="
+                argumentType: varchar
+              _ilike:
+                operatorName: ~~*
+                argumentType: varchar
+              _iregex:
+                operatorName: ~*
+                argumentType: varchar
+              _like:
+                operatorName: ~~
+                argumentType: varchar
+              _lt:
+                operatorName: <
+                argumentType: varchar
+              _lte:
+                operatorName: <=
+                argumentType: varchar
+              _neq:
+                operatorName: <>
+                argumentType: varchar
+              _nilike:
+                operatorName: "!~~*"
+                argumentType: varchar
+              _niregex:
+                operatorName: "!~*"
+                argumentType: varchar
+              _nlike:
+                operatorName: "!~~"
+                argumentType: varchar
+              _nregex:
+                operatorName: "!~"
+                argumentType: varchar
+              _regex:
+                operatorName: "~"
+                argumentType: varchar
+        configureOptions:
+          excludedSchemas:
+            - information_schema
+            - pg_catalog
+            - tiger
+            - crdb_internal
+            - columnar
+            - columnar_internal
+          comparisonOperatorMapping:
+            - operatorName: =
+              exposedName: _eq
+            - operatorName: <=
+              exposedName: _lte
+            - operatorName: ">"
+              exposedName: _gt
+            - operatorName: ">="
+              exposedName: _gte
+            - operatorName: <
+              exposedName: _lt
+            - operatorName: "!="
+              exposedName: _neq
+            - operatorName: LIKE
+              exposedName: _like
+            - operatorName: NOT LIKE
+              exposedName: _nlike
+            - operatorName: ILIKE
+              exposedName: _ilike
+            - operatorName: NOT ILIKE
+              exposedName: _nilike
+            - operatorName: SIMILAR TO
+              exposedName: _similar
+            - operatorName: NOT SIMILAR TO
+              exposedName: _nsimilar
+            - operatorName: <>
+              exposedName: _neq
+            - operatorName: ~~
+              exposedName: _like
+            - operatorName: "!~~"
+              exposedName: _nlike
+            - operatorName: ~~*
+              exposedName: _ilike
+            - operatorName: "!~~*"
+              exposedName: _nilike
+            - operatorName: "~"
+              exposedName: _regex
+            - operatorName: "!~"
+              exposedName: _nregex
+            - operatorName: ~*
+              exposedName: _iregex
+            - operatorName: "!~*"
+              exposedName: _niregex
+---
+kind: DataConnector
+version: v1
+definition:
+  name: deno
+  url:
+    # singleUrl: 'http://asia-south1-a-001.secure-connect.cloud.internal:2018'
+    singleUrl: http://0.0.0.0:8100
+  schema:
+    scalar_types:
+      String:
+        aggregate_functions: {}
+        comparison_operators: {}
+        update_operators: {}
+      InsertTodo_output:
+        aggregate_functions: {}
+        comparison_operators: {}
+        update_operators: {}
+      UpdateTodo_output:
+        aggregate_functions: {}
+        comparison_operators: {}
+        update_operators: {}
+      UpdateUser_output:
+        aggregate_functions: {}
+        comparison_operators: {}
+        update_operators: {}
+      DeleteTodo_output:
+        aggregate_functions: {}
+        comparison_operators: {}
+        update_operators: {}
+      DeleteUser_output:
+        aggregate_functions: {}
+        comparison_operators: {}
+        update_operators: {}
+    object_types:
+      InsertUser_output:
+        fields:
+          response:
+            arguments: {}
+            type:
+              type: named
+              name: String
+          error:
+            arguments: {}
+            type:
+              type: named
+              name: String
+          message:
+            arguments: {}
+            type:
+              type: named
+              name: String
+    collections: []
+    functions: []
+    procedures:
+      - name: InsertUser
+        arguments:
+          first_name:
+            type:
+              type: named
+              name: String
+          last_name:
+            type:
+              type: named
+              name: String
+        result_type:
+          type: named
+          name: InsertUser_output
+      - name: InsertTodo
+        arguments:
+          user_id:
+            type:
+              type: named
+              name: String
+          todo:
+            type:
+              type: named
+              name: String
+        result_type:
+          type: named
+          name: InsertTodo_output
+      - name: UpdateTodo
+        arguments:
+          user_id:
+            type:
+              type: named
+              name: String
+          todo:
+            type:
+              type: named
+              name: String
+        result_type:
+          type: named
+          name: UpdateTodo_output
+      - name: UpdateUser
+        arguments:
+          id:
+            type:
+              type: named
+              name: String
+          first_name:
+            type:
+              type: named
+              name: String
+          last_name:
+            type:
+              type: named
+              name: String
+        result_type:
+          type: named
+          name: UpdateUser_output
+      - name: DeleteTodo
+        arguments:
+          user_id:
+            type:
+              type: named
+              name: String
+        result_type:
+          type: named
+          name: DeleteTodo_output
+      - name: DeleteUser
+        arguments:
+          user_id:
+            type:
+              type: named
+              name: String
+        result_type:
+          type: named
+          name: DeleteUser_output
+  
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: deno
+  dataConnectorScalarType: String
+  representation: String
+  graphql:
+    comparisonExpressionTypeName: deno_String_comparison_exp
+
+---
+kind: ScalarType
+version: v1
+definition:
+  name: InsertTodo_output
+  graphql:
+    typeName: InsertTodo_output
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: deno
+  dataConnectorScalarType: InsertTodo_output
+  representation: InsertTodo_output
+  graphql:
+    comparisonExpressionTypeName: deno_InsertTodo_output_comparison_exp
+
+---
+kind: ScalarType
+version: v1
+definition:
+  name: UpdateTodo_output
+  graphql:
+    typeName: UpdateTodo_output
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: deno
+  dataConnectorScalarType: UpdateTodo_output
+  representation: UpdateTodo_output
+  graphql:
+    comparisonExpressionTypeName: deno_UpdateTodo_output_comparison_exp
+
+---
+kind: ScalarType
+version: v1
+definition:
+  name: UpdateUser_output
+  graphql:
+    typeName: UpdateUser_output
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: deno
+  dataConnectorScalarType: UpdateUser_output
+  representation: UpdateUser_output
+  graphql:
+    comparisonExpressionTypeName: deno_UpdateUser_output_comparison_exp
+
+---
+kind: ScalarType
+version: v1
+definition:
+  name: DeleteTodo_output
+  graphql:
+    typeName: DeleteTodo_output
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: deno
+  dataConnectorScalarType: DeleteTodo_output
+  representation: DeleteTodo_output
+  graphql:
+    comparisonExpressionTypeName: deno_DeleteTodo_output_comparison_exp
+
+---
+kind: ScalarType
+version: v1
+definition:
+  name: DeleteUser_output
+  graphql:
+    typeName: DeleteUser_output
+
+---
+kind: DataConnectorScalarRepresentation
+version: v1
+definition:
+  dataConnectorName: deno
+  dataConnectorScalarType: DeleteUser_output
+  representation: DeleteUser_output
+  graphql:
+    comparisonExpressionTypeName: deno_DeleteUser_output_comparison_exp
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertUser_output
+  fields:
+    - name: response
+      type: String
+    - name: error
+      type: String
+    - name: message
+      type: String
+  graphql:
+    typeName: InsertUser_output
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertUser_output
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - response
+          - error
+          - message
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertUser
+  arguments:
+    - name: first_name
+      type: String
+    - name: last_name
+      type: String
+  outputType: InsertUser_output!
+  source:
+    dataConnectorName: deno
+    dataConnectorCommand:
+      procedure: InsertUser
+  graphql:
+    rootFieldKind: Mutation
+    rootFieldName: InsertUser
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertUser
+  permissions:
+    - role: admin
+      allowExecution: true
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertTodo
+  arguments:
+    - name: user_id
+      type: String
+    - name: todo
+      type: String
+  outputType: InsertTodo_output
+  source:
+    dataConnectorName: deno
+    dataConnectorCommand:
+      procedure: InsertTodo
+  graphql:
+    rootFieldKind: Mutation
+    rootFieldName: InsertTodo
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertTodo
+  permissions:
+    - role: admin
+      allowExecution: true
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateTodo
+  arguments:
+    - name: user_id
+      type: String
+    - name: todo
+      type: String
+  outputType: UpdateTodo_output
+  source:
+    dataConnectorName: deno
+    dataConnectorCommand:
+      procedure: UpdateTodo
+  graphql:
+    rootFieldKind: Mutation
+    rootFieldName: UpdateTodo
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateTodo
+  permissions:
+    - role: admin
+      allowExecution: true
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateUser
+  arguments:
+    - name: id
+      type: String
+    - name: first_name
+      type: String
+    - name: last_name
+      type: String
+  outputType: UpdateUser_output
+  source:
+    dataConnectorName: deno
+    dataConnectorCommand:
+      procedure: UpdateUser
+  graphql:
+    rootFieldKind: Mutation
+    rootFieldName: UpdateUser
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateUser
+  permissions:
+    - role: admin
+      allowExecution: true
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteTodo
+  arguments:
+    - name: user_id
+      type: String
+  outputType: DeleteTodo_output
+  source:
+    dataConnectorName: deno
+    dataConnectorCommand:
+      procedure: DeleteTodo
+  graphql:
+    rootFieldKind: Mutation
+    rootFieldName: DeleteTodo
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteTodo
+  permissions:
+    - role: admin
+      allowExecution: true
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteUser
+  arguments:
+    - name: user_id
+      type: String
+  outputType: DeleteUser_output
+  source:
+    dataConnectorName: deno
+    dataConnectorCommand:
+      procedure: DeleteUser
+  graphql:
+    rootFieldKind: Mutation
+    rootFieldName: DeleteUser
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteUser
+  permissions:
+    - role: admin
+      allowExecution: true
